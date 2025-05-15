@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('bb1.jpeg'); /* Change this to your first background */
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      color: #f5f5f5;
+      font-weight: 300;
+      height: 100vh;
+    }
+
+    h1, #countdownText, #sorryText, #finalMessage, #finalLink {
+      text-shadow: -1px -1px 0 #000, 1px -1px 0 #000,
+                   -1px  1px 0 #000, 1px  1px 0 #000;
+    }
+
+    #container {
+      position: relative;
+      top: 30vh;
+      min-height: 150px;
+    }
+
+    h1 {
+      font-size: 3em;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    #countdownText {
+      font-size: 24px;
+      margin-top: 100px;
+      display: none;
+      max-width: 90%;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    #sorryText {
+      font-size: 20px;
+      margin-top: 150px;
+      display: none;
+      max-width: 90%;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    #finalMessage {
+      font-size: 24px;
+      margin-top: 20px;
+      display: none;
+      max-width: 90%;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    #finalLink {
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    #finalLink p {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    #buttonWrapper {
+      position: relative;
+      display: inline-block;
+      text-align: center;
+    }
+
+    #thankyouBtn {
+      margin-bottom: 80px;
+      position: relative;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Happy Birthday!</h1>
+    <div id="buttonWrapper">
+      <button id="thankyouBtn">Thank You</button>
+      <button id="idiotBtn">You're an Idiot</button>
+    </div>
+    <div id="sorryText">Ok fine... sorry. You can click it now.</div>
+  </div>
+
+  <div id="countdownText"></div>
+  <div id="finalMessage"></div>
+  <div id="finalLink"><p>Here is something I remembered for you:</p><a href="https://drive.google.com/drive/folders/1ri5UFbUVZMLfar84Xa6DVjUx9Hx-n1K_" target="_blank">Click here</a></div>
+
+  <script>
+    const idiotBtn = document.getElementById("idiotBtn");
+    const thankyouBtn = document.getElementById("thankyouBtn");
+    const countdownText = document.getElementById("countdownText");
+    const finalMessage = document.getElementById("finalMessage");
+    const sorryText = document.getElementById("sorryText");
+    const finalLink = document.getElementById("finalLink");
+    const container = document.getElementById("container");
+    const wrapper = document.getElementById("buttonWrapper");
+
+    let hoverTries = 0;
+    let allowClick = false;
+    let prevX = 0;
+    let prevY = 0;
+
+    idiotBtn.onclick = () => {
+      document.querySelector('h1').style.display = "none";
+      let timeLeft = 10;
+      countdownText.style.display = "block";
+      document.body.style.backgroundImage = "url('ang.png')"; // Replace with your image
+      idiotBtn.style.display = "none";
+      thankyouBtn.style.display = "none";
+
+      const timer = setInterval(() => {
+        countdownText.innerHTML = `I knew you would choose violence over peace...<br>So here you go. 
+         Your device will self-destruct in <span style="color: red;">${timeLeft}</span> second(s).`;
+        timeLeft--;
+
+        if (timeLeft < 0) {
+          clearInterval(timer);
+          countdownText.style.display = "none";
+          document.body.style.backgroundImage = "none";
+          document.body.style.backgroundColor = "black";
+          setTimeout(() => {
+            let flashCount = 0;
+            const flash = setInterval(() => {
+              document.body.style.backgroundColor = (flashCount % 2 === 0) ? "#ff0033" : "black";
+              flashCount++;
+              if (flashCount === 12) {
+                clearInterval(flash);
+                document.body.style.backgroundImage = "url('sm2.png')"; // Replace with your 2nd background
+                finalMessage.innerHTML = 'I am joking 😂 Happy Birthday <span style="color:red;">2times NURSERY!</span>';
+                finalMessage.style.display = "block";
+                thankyouBtn.style.display = "inline-block";
+                thankyouBtn.style.pointerEvents = "auto";
+                thankyouBtn.style.opacity = "1";
+                thankyouBtn.style.position = "relative";
+                thankyouBtn.style.left = "0";
+                thankyouBtn.style.top = "0";
+                hoverTries = 0;
+                allowClick = false;
+              }
+            }, 300);
+          }, 500);
+        }
+      }, 1000);
+    };
+
+    thankyouBtn.addEventListener("mouseover", () => {
+      finalMessage.style.display = "none";
+      if (!allowClick && hoverTries < 4) {
+        const btnWidth = thankyouBtn.offsetWidth || 120;
+        const btnHeight = thankyouBtn.offsetHeight || 40;
+
+        const wrapperWidth = wrapper.offsetWidth;
+        const wrapperHeight = wrapper.offsetHeight;
+
+        const areaWidth = Math.min(wrapperWidth * 1.2, wrapperWidth);
+        const areaHeight = Math.min(wrapperHeight * 1.2, wrapperHeight);
+
+        const centerX = wrapperWidth / 2;
+        const centerY = wrapperHeight / 2;
+
+        const areaLeft = centerX - areaWidth / 2;
+        const areaTop = centerY - areaHeight / 2;
+
+        let x, y;
+        let tries = 0;
+        do {
+          x = areaLeft + Math.random() * (areaWidth - btnWidth);
+          y = areaTop + Math.random() * (areaHeight - btnHeight);
+          tries++;
+        } while (
+          tries < 10 &&
+          Math.abs(x - prevX) < 80 &&
+          Math.abs(y - prevY) < 80
+        );
+
+        x = Math.max(0, Math.min(x, wrapperWidth - btnWidth));
+        y = Math.max(0, Math.min(y, wrapperHeight - btnHeight));
+
+        prevX = x;
+        prevY = y;
+
+        thankyouBtn.style.position = "absolute";
+        thankyouBtn.style.left = `${x}px`;
+        thankyouBtn.style.top = `${y}px`;
+        thankyouBtn.style.transform = "translate(0, 0)";
+        thankyouBtn.style.visibility = "visible";
+        thankyouBtn.style.opacity = "1";
+        thankyouBtn.style.zIndex = "9999";
+        hoverTries++;
+      }
+
+      if (hoverTries === 4) {
+        thankyouBtn.style.position = "fixed";
+        thankyouBtn.style.left = "50%";
+        thankyouBtn.style.top = "50%";
+        thankyouBtn.style.transform = "translate(-50%, -50%)";
+        thankyouBtn.style.zIndex = "1000";
+        setTimeout(() => {
+          document.body.style.backgroundImage = "url('mon.gif')";
+          sorryText.style.display = "block";
+          allowClick = true;
+        }, 100);
+      } else {
+        thankyouBtn.style.transform = "none";
+      }
+    });
+
+    thankyouBtn.addEventListener("click", () => {
+      if (allowClick) {
+        document.body.style.backgroundImage = "url('gift.png')"; // Replace with your 2nd background
+        sorryText.style.display = "none";
+        finalLink.style.display = "block";
+        thankyouBtn.style.display = "none";
+      }
+    });
+
+    thankyouBtn.style.pointerEvents = "none";
+    thankyouBtn.style.opacity = "0.6";
+  </script>
+</body>
+</html>
